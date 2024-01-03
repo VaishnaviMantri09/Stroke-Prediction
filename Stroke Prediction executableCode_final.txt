@@ -1,0 +1,91 @@
+
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"]=20,20
+import seaborn as sns
+import numpy as num
+%matplotlib inline
+data=pd.read_csv(r'C:\Users\kakashi\Downloads\archive\healthcare-dataset-stroke-data_balanced.csv')
+
+
+sns.countplot(x=data['stroke'],data=data)
+data
+data.hist()
+
+data.plot(kind='box')
+plt.show()
+
+data['avg_glucose_level'].describe()
+
+from sklearn.preprocessing import LabelEncoder
+enc=LabelEncoder()
+gender=enc.fit_transform(data['gender'])
+data['gender']
+smoking_status=enc.fit_transform(data['smoking_status'])
+list(smoking_status)
+work_type=enc.fit_transform(data['work_type'])
+Residence_type=enc.fit_transform(data['Residence_type'])
+ever_married=enc.fit_transform(data['ever_married'])
+heart_disease=enc.fit_transform(data['heart_disease'])
+hypertension=enc.fit_transform(data['hypertension'])
+stroke=enc.fit_transform(data['stroke'])
+data['work_type']=work_type
+data['Residence_type']=Residence_type
+data['ever_married']=ever_married
+data['gender']=gender
+data['smoking_status']=smoking_status
+data['heart_disease']=heart_disease
+data['hypertension']=hypertension
+data['stroke']=stroke
+
+data
+
+data.info()
+
+X= data.drop('stroke',axis=1)
+Y= data['stroke']
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test=train_test_split(X,Y,test_size=0.2,random_state=101)
+X_train
+import matplotlib.pyplot as plt
+plt.rcParams["figure.figsize"]=20,20
+X_train.hist()
+plt.show()
+X_test
+Y_train
+Y_test
+
+data.describe()
+
+from sklearn.preprocessing import StandardScaler
+std=StandardScaler()
+X_train_std=std.fit_transform(X_train)
+X_test_std=std.transform(X_test)
+X_train_std
+X_test_std
+from sklearn.tree import DecisionTreeClassifier
+dt=DecisionTreeClassifier()
+dt.fit(X_train_std, Y_train)
+dt.feature_importances_
+X_train.columns
+dt.predict(X_test_std)
+X_test
+Y_test
+Y_pred=dt.predict(X_test_std)
+X_test
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+ac_dt=accuracy_score(Y_test,Y_pred)
+ac_dt
+f_dt=f1_score(Y_test,Y_pred)
+f_dt
+
+from matplotlib import pyplot as plt
+from sklearn import datasets
+from sklearn.tree import DecisionTreeClassifier 
+from sklearn import tree
+from sklearn import tree
+fig, ax = plt.subplots(figsize=[50,50])
+tree.plot_tree(dt,fontsize=10)
+plt.show()
